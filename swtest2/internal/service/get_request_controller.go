@@ -178,6 +178,11 @@ func ChangeCompany(company *models.Company, id string) error {
 	if company.Clients != nil {
 		clientId := &models.ClientId{}
 
+		_, err := db.Query(query.DeleteCompanyClients, id)
+		if err != nil {
+			return err
+		}
+
 		for _, v := range company.Clients {
 			err := db.Get(clientId, "SELECT id FROM client WHERE fio = $1", v)
 			if err != nil {
@@ -188,6 +193,34 @@ func ChangeCompany(company *models.Company, id string) error {
 				return err
 			}
 		}
+	}
+	return nil
+}
+
+func ShowClientCompanysInfo(id string) ([]*models.Client_Companys, error) {
+
+	var clientCompanysInfo = make([]*models.Client_Companys, 0)
+	rows, err := db.Queryx(query.ShowClientCompanysInfo, id)
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		var a models.Client_Companys
+		err = rows.StructScan(&a)
+		if err != nil {
+			return nil, err
+		}
+		clientCompanysInfo = append(clientCompanysInfo, &a)
+	}
+	rows.Close()
+
+	return clientCompanysInfo, nil
+}
+
+func AddApplication(application *models.Application) error {
+	_, err := db.NamedExec(query.AddApplication, application)
+	if err != nil {
+		return err
 	}
 	return nil
 }

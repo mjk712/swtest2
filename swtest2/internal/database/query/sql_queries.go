@@ -50,3 +50,14 @@ WHERE id = $2`
 
 var ChangeCompanyLegalAddress = `UPDATE Company SET legal_address = $1
 WHERE id = $2`
+
+var DeleteCompanyClients = `DELETE FROM companyclients WHERE companyid = $1`
+
+var ShowClientCompanysInfo = `SELECT c.fio AS client_full_name, v.name AS company_name, v.inn AS company_inn, v.legal_address AS company_legal_address
+FROM client c
+LEFT JOIN companyclients cv ON cv.clientid = c.id
+LEFT JOIN company v ON v.id = cv.companyid
+WHERE c.id = $1;`
+
+var AddApplication = `INSERT INTO Application(vacationid,status,client_message)
+VALUES(:vacationid,:status,:client_message)`

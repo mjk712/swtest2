@@ -4,12 +4,34 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 	"swtest2/internal/models"
 	"swtest2/internal/service"
 	"swtest2/internal/utils"
 
 	"github.com/gorilla/mux"
 )
+
+func Login(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "POST":
+		user := &models.User{}
+		utils.ParseBody(r, user)
+		token, err := service.GetUserToken(user.Username, user.Password)
+		if err != nil {
+			w.WriteHeader(http.StatusUnauthorized)
+			w.Write([]byte("Shit error in login"))
+		}
+
+		f := fmt.Sprintf("Succesfull login, your token - %s", token)
+		res, _ := json.Marshal(f)
+		w.WriteHeader(http.StatusOK)
+		w.Write(res)
+
+	case "GET":
+		fmt.Fprintf(w, "only POST methods is allowed.")
+	}
+}
 
 func AddColleague(w http.ResponseWriter, r *http.Request) {
 
@@ -188,4 +210,38 @@ func ChangeCompany(w http.ResponseWriter, r *http.Request) {
 	res, _ := json.Marshal(f)
 	w.WriteHeader(http.StatusCreated)
 	w.Write(res)
+}
+
+func ShowClientCompanysInfo() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		id, _ := r.Context().Value("clientId").(uint64)
+		clientCompanysInfo, err := service.ShowClientCompanysInfo(strconv.FormatUint(id, 10))
+		if err != nil {
+			fmt.Println(err)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Shit error in show client companys info"))
+		}
+
+		res, _ := json.Marshal(clientCompanysInfo)
+		w.WriteHeader(http.StatusOK)
+		w.Write(res)
+	})
+}
+
+func AddApplication() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		application := &models.Application{}
+		utils.ParseBody(r, application)
+		err := service.AddApplication(application)
+		if err != nil {
+			fmt.Println(err)
+			w.WriteHeader(http.StatusBadRequest)
+			w.Write([]byte("Shit error in add application"))
+		}
+		f := fmt.Sprintf("Created Application with status-%s", application.Status)
+		res, _ := json.Marshal(f)
+		w.WriteHeader(http.StatusCreated)
+		w.Write(res)
+	})
 }
