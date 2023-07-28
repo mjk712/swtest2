@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"swtest2/internal/config"
 	"time"
 
 	"github.com/golang-jwt/jwt"
@@ -15,10 +16,11 @@ func AuthMiddleware(next http.Handler, role string) http.Handler {
 			fmt.Fprintf(w, "can not find token in header")
 			return
 		}
+		cfg := config.NewStorageConfig()
 		tokenString := r.Header.Get("Token")
 		claims := jwt.MapClaims{}
 		_, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-			return []byte("GregorySwtest2"), nil
+			return cfg.TokenSecretKey, nil
 		})
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)

@@ -27,10 +27,10 @@ WHERE id = $2`
 var ChangeClientLoginPassword = `UPDATE Client SET loginpassword = $1
 WHERE id = $2`
 
-var ShowClientsApplication = `SELECT c.fio AS client_full_name,a.status AS application_status, a.id AS application_id
+var ShowClientsApplication = `SELECT c.fio AS client_full_name,a.status AS application_status, a.id AS application_id, a.client_message
 FROM client c
-LEFT JOIN clientvacations cv ON cv.clientid = c.id
-LEFT JOIN application a ON a.id = cv.vacationid
+LEFT JOIN clientapplication ca ON ca.clientid = c.id
+LEFT JOIN application a ON a.id = ca.applicationid
 WHERE a.id IS NOT NULL;`
 
 var ChangeApplicationStatus = `UPDATE application SET status = $1
@@ -61,3 +61,9 @@ WHERE c.id = $1;`
 
 var AddApplication = `INSERT INTO Application(vacationid,status,client_message)
 VALUES(:vacationid,:status,:client_message)`
+
+var InsertIntoClientApplication = `INSERT INTO ClientApplication(ClientId,ApplicationId)
+VALUES($1,$2);`
+
+var InsertIntoClientVacation = `INSERT INTO ClientVacations(ClientId,VacationId)
+VALUES($1,$2);`

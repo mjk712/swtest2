@@ -1,14 +1,12 @@
 package service
 
 import (
-	"fmt"
+	"swtest2/internal/config"
 	"swtest2/internal/models"
 	"time"
 
 	"github.com/golang-jwt/jwt"
 )
-
-var MySecretKey = []byte("GregorySwtest2")
 
 func GetUserToken(login, password string) (string, error) {
 
@@ -39,6 +37,7 @@ func GetUserToken(login, password string) (string, error) {
 }
 
 func generateJWT(id uint, role string) (string, error) {
+	cfg := config.NewStorageConfig()
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 
@@ -47,10 +46,9 @@ func generateJWT(id uint, role string) (string, error) {
 	claims["role"] = role
 	claims["exp"] = time.Now().Add(time.Minute * 30).Unix()
 
-	tokenString, err := token.SignedString(MySecretKey)
+	tokenString, err := token.SignedString(cfg.TokenSecretKey)
 
 	if err != nil {
-		fmt.Errorf("Something Went Wrong: %s", err.Error())
 		return "", err
 	}
 	return tokenString, nil
