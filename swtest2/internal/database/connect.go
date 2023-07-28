@@ -1,6 +1,7 @@
 package database
 
 import (
+	"fmt"
 	"swtest2/internal/config"
 
 	"github.com/jmoiron/sqlx"
@@ -13,7 +14,13 @@ var (
 
 func Connect() error {
 	cfg := config.NewStorageConfig()
-	d, err := sqlx.Connect("postgres", cfg.DbString)
+	url := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
+		cfg.Username,
+		cfg.Password,
+		cfg.Host,
+		cfg.Port,
+		cfg.Database)
+	d, err := sqlx.Connect("postgres", url)
 	if err != nil {
 		return err
 	}

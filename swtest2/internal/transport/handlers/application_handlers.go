@@ -40,7 +40,6 @@ func ChangeApplicationStatus() http.Handler {
 		utils.ParseBody(r, appstatus)
 		err := service.ChangeApplicationStatus(application_id, appstatus.Status)
 		if err != nil {
-			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("Shit error in change application status"))
 		}

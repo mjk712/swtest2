@@ -2,14 +2,22 @@ package config
 
 type StorageConfig struct {
 	TokenSecretKey []byte
-	DbString       string
+	Host           string
+	Port           string
+	Username       string
+	Password       string
+	Database       string
 	MigrationsPath string
 }
 
 func NewStorageConfig() StorageConfig {
 	return StorageConfig{
 		TokenSecretKey: []byte("GregorySwtest2"),
-		DbString:       DBSTRING,
+		Host:           DBHOST,
+		Port:           "5432",
+		Username:       DBUSERNAME,
+		Password:       DBPASSWORD,
+		Database:       DBNAME,
 		MigrationsPath: MIGRPATH,
 	}
 }
