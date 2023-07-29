@@ -20,6 +20,7 @@ func Connect() error {
 		cfg.Host,
 		cfg.Port,
 		cfg.Database)
+	fmt.Println(url + "gay")
 	d, err := sqlx.Connect("postgres", url)
 	if err != nil {
 		return err

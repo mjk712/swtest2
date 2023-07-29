@@ -1,25 +1,26 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres:latest
-    container_name: "clair_postgres"
+  swtest2:
+    build: ./
+    command: ./swtest2
     ports:
-      - "5436:5432"
-    environment:
-      - POSTGRES_DB=travelagency
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - 8000:8000
+    depends_on:
+      - db
     networks:
       - fullstack
 
-  web:
-    build: .
-    container_name: swtestWeb
+
+  db:
+    image: postgres:latest
+    container_name: "postgresd"
     ports:
-      - "8080:8080"
-    depends_on:
-      - db
+      - "5436:5436"
+    environment:
+      - POSTGRES_DB=travelagency
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234
     networks:
       - fullstack
 
