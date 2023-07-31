@@ -22,6 +22,7 @@ func AddApplication() http.Handler {
 			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("Shit error in add application"))
+			return
 		}
 		res, _ := json.Marshal(application)
 		w.WriteHeader(http.StatusCreated)
@@ -42,6 +43,7 @@ func ChangeApplicationStatus() http.Handler {
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("Shit error in change application status"))
+			return
 		}
 		f := fmt.Sprintf("Change application with id %s, status = %s", application_id, appstatus.Status)
 		res, _ := json.Marshal(f)

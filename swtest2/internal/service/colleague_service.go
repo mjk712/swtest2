@@ -1,12 +1,12 @@
 package service
 
 import (
-	"swtest2/internal/database/query"
+	"swtest2/internal/database"
 	"swtest2/internal/models"
 )
 
 func AddColleague(colleague *models.Colleague) error {
-	_, err := db.NamedExec(query.AddColleague, colleague)
+	err := database.CreateColleague(colleague)
 	if err != nil {
 		return err
 	}
@@ -14,8 +14,7 @@ func AddColleague(colleague *models.Colleague) error {
 }
 
 func BlockColleague(id string) error {
-
-	_, err := db.Query(query.BlockColleague, id)
+	err := database.BlockColleague(id)
 	if err != nil {
 		return err
 	}

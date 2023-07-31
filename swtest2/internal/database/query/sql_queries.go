@@ -67,3 +67,15 @@ VALUES($1,$2);`
 
 var InsertIntoClientVacation = `INSERT INTO ClientVacations(ClientId,VacationId)
 VALUES($1,$2);`
+
+var GetClientByMessage = `SELECT * FROM application WHERE client_message = $1`
+
+var GetClientIdFromClientVacations = `SELECT ClientId AS id FROM ClientVacations WHERE ClientId = $1 AND VacationId = $2`
+
+var GetClientById = `SELECT * FROM client WHERE id = $1`
+
+var GetCompanyIdByName = `SELECT id FROM company WHERE name = $1`
+
+var GetClientIdByFio = `SELECT id FROM client WHERE fio = $1`
+
+var GetCompanyById = `SELECT * FROM company WHERE id = $1`
