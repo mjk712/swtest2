@@ -6,7 +6,7 @@ import (
 )
 
 func (r RepoDB) CreateColleague(colleague *models.Colleague) error {
-	_, err := r.db.NamedExec(query.AddColleague, colleague)
+	_, err := r.db.Query(query.AddColleague, colleague.Fio, colleague.LoginPassword, colleague.Status)
 	if err != nil {
 		return err
 	}

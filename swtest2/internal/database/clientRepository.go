@@ -14,7 +14,7 @@ func (r RepoDB) AuthClient(client *models.Client, loginpassword string) error {
 }
 
 func (r RepoDB) CreateClient(client *models.Client) error {
-	_, err := r.db.NamedExec(query.AddClient, client)
+	_, err := r.db.Query(query.AddClient, client.Fio, client.Passport, client.EmailTelephone, client.LoginPassword)
 	if err != nil {
 		return err
 	}

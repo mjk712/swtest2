@@ -20,6 +20,7 @@ func (h *handler) AddClient() http.Handler {
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("error in add client:" + err.Error()))
+			return
 		}
 		f := fmt.Sprintf("Created Client-%s", client.Fio)
 		res, _ := json.Marshal(f)

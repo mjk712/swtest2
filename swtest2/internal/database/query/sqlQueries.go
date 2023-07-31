@@ -7,9 +7,9 @@ var BlockColleague = `UPDATE Colleague SET status = 'Заблокирован'
 WHERE id = $1`
 
 var AddClient = `INSERT INTO Client(fio,passport,email_telephone,loginpassword)
-VALUES(:fio,:passport,:email_telephone,:loginpassword)`
+VALUES($1,$2,$3,$4)`
 
-var ShowClientInfo = `SELECT c.fio AS client_full_name, c.passport AS client_passport,c.email_telephone AS client_email_telephone, v.name AS vacation_name
+var ShowClientInfo = `SELECT c.fio AS clientFullname, c.passport AS clientPassport,c.email_telephone AS clientEmailTelephone, v.name AS vacationName
 FROM client c
 LEFT JOIN clientvacations cv ON cv.clientid = c.id
 LEFT JOIN vacation v ON v.id = cv.vacationid
@@ -27,7 +27,7 @@ WHERE id = $2`
 var ChangeClientLoginPassword = `UPDATE Client SET loginpassword = $1
 WHERE id = $2`
 
-var ShowClientsApplication = `SELECT c.fio AS client_full_name,a.status AS application_status, a.id AS application_id, a.client_message
+var ShowClientsApplication = `SELECT c.fio AS clientFullname,a.status AS applicationStatus, a.id AS applicationId, a.client_message AS clientMessage
 FROM client c
 LEFT JOIN clientapplication ca ON ca.clientid = c.id
 LEFT JOIN application a ON a.id = ca.applicationid
@@ -37,7 +37,7 @@ var ChangeApplicationStatus = `UPDATE application SET status = $1
 WHERE id = $2`
 
 var InsertCompany = `INSERT INTO Company (name,inn,legal_address)
-VALUES(:name,:inn,:legal_address)`
+VALUES($1,$2,$3)`
 
 var InsertCompanyClients = `INSERT INTO CompanyClients(CompanyId,ClientId)
 VALUES($1,$2)`
@@ -53,14 +53,14 @@ WHERE id = $2`
 
 var DeleteCompanyClients = `DELETE FROM companyclients WHERE companyid = $1`
 
-var ShowClientCompanysInfo = `SELECT c.fio AS client_full_name, v.name AS company_name, v.inn AS company_inn, v.legal_address AS company_legal_address
+var ShowClientCompanysInfo = `SELECT c.fio AS clientFullname, v.name AS companyName, v.inn AS companyInn, v.legal_address AS companyLegalAddress
 FROM client c
 LEFT JOIN companyclients cv ON cv.clientid = c.id
 LEFT JOIN company v ON v.id = cv.companyid
 WHERE c.id = $1;`
 
 var AddApplication = `INSERT INTO Application(vacationid,status,client_message)
-VALUES(:vacationid,:status,:client_message)`
+VALUES($1,$2,$3)`
 
 var InsertIntoClientApplication = `INSERT INTO ClientApplication(ClientId,ApplicationId)
 VALUES($1,$2);`
@@ -68,14 +68,14 @@ VALUES($1,$2);`
 var InsertIntoClientVacation = `INSERT INTO ClientVacations(ClientId,VacationId)
 VALUES($1,$2);`
 
-var GetClientByMessage = `SELECT * FROM application WHERE client_message = $1`
+var GetClientByMessage = `SELECT id, vacationId, status, client_message AS clientMessage FROM application WHERE client_message = $1`
 
 var GetClientIdFromClientVacations = `SELECT ClientId AS id FROM ClientVacations WHERE ClientId = $1 AND VacationId = $2`
 
-var GetClientById = `SELECT * FROM client WHERE id = $1`
+var GetClientById = `SELECT id,fio,passport,email_telephone AS emailTelephone,loginpassword FROM client WHERE id = $1`
 
 var GetCompanyIdByName = `SELECT id FROM company WHERE name = $1`
 
 var GetClientIdByFio = `SELECT id FROM client WHERE fio = $1`
 
-var GetCompanyById = `SELECT * FROM company WHERE id = $1`
+var GetCompanyById = `SELECT id,name,inn,legal_address AS legalAddress FROM company WHERE id = $1`

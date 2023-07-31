@@ -28,28 +28,24 @@ func (s *service) ChangeClient(client *models.Client, id string) error {
 		if err != nil {
 			return err
 		}
-		return nil
 	}
 	if client.Passport != "" {
 		err := s.travelAgencyRepo.ChangeClientPassport(client, id)
 		if err != nil {
 			return err
 		}
-		return nil
 	}
 	if client.EmailTelephone != "" {
 		err := s.travelAgencyRepo.ChangeClientEmailTelephone(client, id)
 		if err != nil {
 			return err
 		}
-		return nil
 	}
 	if client.LoginPassword != "" {
 		err := s.travelAgencyRepo.ChangeClientLoginPassword(client, id)
 		if err != nil {
 			return err
 		}
-		return nil
 	}
 	err := s.travelAgencyRepo.GetClient(client, id)
 	if err != nil {

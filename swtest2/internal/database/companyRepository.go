@@ -7,7 +7,7 @@ import (
 )
 
 func (r RepoDB) CreateCompany(company *models.Company) (*models.Company, error) {
-	_, err := r.db.NamedExec(query.InsertCompany, company)
+	_, err := r.db.Query(query.InsertCompany, company.Name, company.Inn, company.LegalAddress)
 	if err != nil {
 		return nil, err
 	}
@@ -85,7 +85,7 @@ func (r RepoDB) ChangeCompanyClients(company *models.Company, id string) error {
 	for _, v := range company.Clients {
 		err := r.db.Get(clientId, query.GetClientIdByFio, v)
 		if err != nil {
-			fmt.Println(err)
+			return err
 		}
 		_, err = r.db.Query(query.InsertCompanyClients, id, int(clientId.Id))
 		if err != nil {

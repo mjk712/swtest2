@@ -14,7 +14,7 @@ func (r RepoDB) ChangeApplicationStatus(id, status string) error {
 }
 
 func (r RepoDB) CreateApplication(application *models.Application, clientId string) error {
-	_, err := r.db.NamedExec(query.AddApplication, application)
+	_, err := r.db.Query(query.AddApplication, application.VacationId, application.Status, application.ClientMessage)
 	if err != nil {
 		return err
 	}
