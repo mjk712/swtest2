@@ -5,18 +5,17 @@ import (
 	"fmt"
 	"net/http"
 	"swtest2/internal/models"
-	"swtest2/internal/service"
 	"swtest2/internal/utils"
 
 	"github.com/gorilla/mux"
 )
 
-func AddColleague() http.Handler {
+func (h *handler) AddColleague() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		colleague := &models.Colleague{}
 		utils.ParseBody(r, colleague)
-		err := service.AddColleague(colleague)
+		err := h.service.AddColleague(colleague)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("Shit error in add colleague"))
@@ -29,11 +28,11 @@ func AddColleague() http.Handler {
 	})
 }
 
-func BlockColleague() http.Handler {
+func (h *handler) BlockColleague() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		colleagueId := vars["id"]
-		err := service.BlockColleague(colleagueId)
+		err := h.service.BlockColleague(colleagueId)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("OMG error in Block colleague"))

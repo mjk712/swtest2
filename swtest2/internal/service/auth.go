@@ -8,12 +8,12 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func GetUserToken(login, password string) (string, error) {
+func (s *service) GetUserToken(login, password string) (string, error) {
 
 	loginpassword := login + "/" + password
 	colleague := &models.Colleague{}
 	client := &models.Client{}
-	err := db.Get(colleague, "SELECT id FROM colleague WHERE loginpassword = $1", loginpassword)
+	err := s.travelAgencyRepo.AuthColleague(colleague, loginpassword)
 	if err == nil {
 		role := "colleague"
 		id := colleague.Id
@@ -23,7 +23,7 @@ func GetUserToken(login, password string) (string, error) {
 		}
 		return token, nil
 	}
-	err = db.Get(client, "SELECT id FROM client WHERE loginpassword = $1", loginpassword)
+	err = s.travelAgencyRepo.AuthClient(client, loginpassword)
 	if err == nil {
 		role := "client"
 		id := client.Id

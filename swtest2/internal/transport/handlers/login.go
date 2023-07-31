@@ -5,16 +5,15 @@ import (
 	"fmt"
 	"net/http"
 	"swtest2/internal/models"
-	"swtest2/internal/service"
 	"swtest2/internal/utils"
 )
 
-func Login(w http.ResponseWriter, r *http.Request) {
+func (h *handler) Login(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
 		user := &models.User{}
 		utils.ParseBody(r, user)
-		token, err := service.GetUserToken(user.Username, user.Password)
+		token, err := h.service.GetUserToken(user.Username, user.Password)
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte("Shit error in login"))

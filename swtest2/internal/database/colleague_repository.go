@@ -5,16 +5,24 @@ import (
 	"swtest2/internal/models"
 )
 
-func CreateColleague(colleague *models.Colleague) error {
-	_, err := db.NamedExec(query.AddColleague, colleague)
+func (r RepoDB) CreateColleague(colleague *models.Colleague) error {
+	_, err := r.db.NamedExec(query.AddColleague, colleague)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func BlockColleague(id string) error {
-	_, err := db.Query(query.BlockColleague, id)
+func (r RepoDB) BlockColleague(id string) error {
+	_, err := r.db.Query(query.BlockColleague, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r RepoDB) AuthColleague(colleague *models.Colleague, loginpassword string) error {
+	err := r.db.Get(colleague, "SELECT id FROM colleague WHERE loginpassword = $1", loginpassword)
 	if err != nil {
 		return err
 	}

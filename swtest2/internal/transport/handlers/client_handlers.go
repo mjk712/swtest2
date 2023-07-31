@@ -6,18 +6,17 @@ import (
 	"net/http"
 	"strconv"
 	"swtest2/internal/models"
-	"swtest2/internal/service"
 	"swtest2/internal/utils"
 
 	"github.com/gorilla/mux"
 )
 
-func AddClient() http.Handler {
+func (h *handler) AddClient() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		client := &models.Client{}
 		utils.ParseBody(r, client)
-		err := service.AddClient(client)
+		err := h.service.AddClient(client)
 		if err != nil {
 			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
@@ -30,7 +29,7 @@ func AddClient() http.Handler {
 	})
 }
 
-func ShowClientInfo() http.Handler {
+func (h *handler) ShowClientInfo() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		clientId, ok := vars["id"]
@@ -38,7 +37,7 @@ func ShowClientInfo() http.Handler {
 			id := r.Context().Value("clientId").(uint64)
 			clientId = strconv.FormatUint(id, 10)
 		}
-		clientInfo, err := service.ShowClientInfo(clientId)
+		clientInfo, err := h.service.ShowClientInfo(clientId)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("OMG error in ShowClientInfo"))
@@ -66,14 +65,14 @@ func ShowClientInfo() http.Handler {
 	})
 }
 
-func ChangeClient() http.Handler {
+func (h *handler) ChangeClient() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		vars := mux.Vars(r)
 		clientId := vars["id"]
 		client := &models.Client{}
 		utils.ParseBody(r, client)
-		err := service.ChangeClient(client, clientId)
+		err := h.service.ChangeClient(client, clientId)
 		if err != nil {
 			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
@@ -85,10 +84,10 @@ func ChangeClient() http.Handler {
 	})
 }
 
-func ShowClientApplicationsInfo() http.Handler {
+func (h *handler) ShowClientApplicationsInfo() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-		clientsApplicationsInfo, err := service.ShowClientsApplicationsInfo()
+		clientsApplicationsInfo, err := h.service.ShowClientsApplicationsInfo()
 		if err != nil {
 			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)

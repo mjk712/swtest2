@@ -10,7 +10,7 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func AuthMiddleware(next http.Handler, role string) http.Handler {
+func (h *handler) AuthMiddleware(next http.Handler, role string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Header["Token"] == nil {
 			fmt.Fprintf(w, "can not find token in header")

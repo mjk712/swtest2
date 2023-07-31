@@ -1,20 +1,19 @@
 package service
 
 import (
-	"swtest2/internal/database"
 	"swtest2/internal/models"
 )
 
-func AddClient(client *models.Client) error {
-	err := database.CreateClient(client)
+func (s *service) AddClient(client *models.Client) error {
+	err := s.travelAgencyRepo.CreateClient(client)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func ShowClientInfo(id string) ([]*models.Client_Vacations, error) {
-	client, err := database.ShowClientInfo(id)
+func (s *service) ShowClientInfo(id string) ([]*models.Client_Vacations, error) {
+	client, err := s.travelAgencyRepo.ShowClientInfo(id)
 	if err != nil {
 		return nil, err
 	}
@@ -22,45 +21,45 @@ func ShowClientInfo(id string) ([]*models.Client_Vacations, error) {
 	return client, nil
 }
 
-func ChangeClient(client *models.Client, id string) error {
+func (s *service) ChangeClient(client *models.Client, id string) error {
 
 	if client.Fio != "" {
-		err := database.ChangeClientFio(client, id)
+		err := s.travelAgencyRepo.ChangeClientFio(client, id)
 		if err != nil {
 			return err
 		}
 		return nil
 	}
 	if client.Passport != "" {
-		err := database.ChangeClientPassport(client, id)
+		err := s.travelAgencyRepo.ChangeClientPassport(client, id)
 		if err != nil {
 			return err
 		}
 		return nil
 	}
 	if client.Email_Telephone != "" {
-		err := database.ChangeClientEmailTelephone(client, id)
+		err := s.travelAgencyRepo.ChangeClientEmailTelephone(client, id)
 		if err != nil {
 			return err
 		}
 		return nil
 	}
 	if client.LoginPassword != "" {
-		err := database.ChangeClientLoginPassword(client, id)
+		err := s.travelAgencyRepo.ChangeClientLoginPassword(client, id)
 		if err != nil {
 			return err
 		}
 		return nil
 	}
-	err := database.GetClient(client, id)
+	err := s.travelAgencyRepo.GetClient(client, id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func ShowClientsApplicationsInfo() ([]*models.Clients_Applications, error) {
-	clientApplications, err := database.ShowClientApplicationsInfo()
+func (s *service) ShowClientsApplicationsInfo() ([]*models.Clients_Applications, error) {
+	clientApplications, err := s.travelAgencyRepo.ShowClientApplicationsInfo()
 	if err != nil {
 		return nil, err
 	}

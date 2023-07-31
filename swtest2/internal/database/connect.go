@@ -8,11 +8,7 @@ import (
 	"github.com/pressly/goose"
 )
 
-var (
-	db *sqlx.DB
-)
-
-func Connect() error {
+func Connect() (*sqlx.DB, error) {
 	cfg := config.NewStorageConfig()
 	url := fmt.Sprintf("postgres://%v:%v@%v:%v/%v?sslmode=disable",
 		cfg.Username,
@@ -21,17 +17,20 @@ func Connect() error {
 		cfg.Port,
 		cfg.Database)
 	fmt.Println(url)
-	d, err := sqlx.Connect("postgres", url)
+	base, err := sqlx.Connect("postgres", url)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	db = d
-	if err := goose.Up(db.DB, cfg.MigrationsPath); err != nil {
+	if err := goose.Up(base.DB, cfg.MigrationsPath); err != nil {
 		panic(err)
 	}
-	return nil
+	return base, nil
 }
 
-func GetDB() *sqlx.DB {
-	return db
+type RepoDB struct {
+	db *sqlx.DB
+}
+
+func NewRepoDB(db *sqlx.DB) RepoDB {
+	return RepoDB{db}
 }

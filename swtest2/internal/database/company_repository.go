@@ -6,24 +6,24 @@ import (
 	"swtest2/internal/models"
 )
 
-func CreateCompany(company *models.Company) (*models.Company, error) {
-	_, err := db.NamedExec(query.InsertCompany, company)
+func (r RepoDB) CreateCompany(company *models.Company) (*models.Company, error) {
+	_, err := r.db.NamedExec(query.InsertCompany, company)
 	if err != nil {
 		return nil, err
 	}
 	companyId := &models.CompanyId{}
 	clientId := &models.ClientId{}
-	err = db.Get(companyId, query.GetCompanyIdByName, company.Name)
+	err = r.db.Get(companyId, query.GetCompanyIdByName, company.Name)
 	if err != nil {
 		return nil, err
 	}
 	for _, v := range company.Clients {
-		err = db.Get(clientId, query.GetClientIdByFio, v)
+		err = r.db.Get(clientId, query.GetClientIdByFio, v)
 		if err != nil {
 			fmt.Println(err)
 		}
 		company.Id = companyId.Id
-		_, err := db.Query(query.InsertCompanyClients, int(companyId.Id), int(clientId.Id))
+		_, err := r.db.Query(query.InsertCompanyClients, int(companyId.Id), int(clientId.Id))
 		if err != nil {
 			return nil, err
 		}
@@ -31,63 +31,63 @@ func CreateCompany(company *models.Company) (*models.Company, error) {
 	return company, nil
 }
 
-func AddClientIntoCompany(clientFio, companyName string) error {
+func (r RepoDB) AddClientIntoCompany(clientFio, companyName string) error {
 	companyId := &models.CompanyId{}
 	clientId := &models.ClientId{}
-	err := db.Get(companyId, query.GetCompanyIdByName, companyName)
+	err := r.db.Get(companyId, query.GetCompanyIdByName, companyName)
 	if err != nil {
 		return err
 	}
 
-	err = db.Get(clientId, query.GetClientIdByFio, clientFio)
+	err = r.db.Get(clientId, query.GetClientIdByFio, clientFio)
 	if err != nil {
 		return err
 	}
-	_, err = db.Query(query.InsertCompanyClients, int(companyId.Id), int(clientId.Id))
+	_, err = r.db.Query(query.InsertCompanyClients, int(companyId.Id), int(clientId.Id))
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func ChangeCompanyName(company *models.Company, id string) error {
-	_, err := db.Query(query.ChangeCompanyName, company.Name, id)
+func (r RepoDB) ChangeCompanyName(company *models.Company, id string) error {
+	_, err := r.db.Query(query.ChangeCompanyName, company.Name, id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func ChangeCompanyInn(company *models.Company, id string) error {
-	_, err := db.Query(query.ChangeCompanyInn, company.Inn, id)
+func (r RepoDB) ChangeCompanyInn(company *models.Company, id string) error {
+	_, err := r.db.Query(query.ChangeCompanyInn, company.Inn, id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func ChangeCompanyLegalAddress(company *models.Company, id string) error {
-	_, err := db.Query(query.ChangeCompanyLegalAddress, company.Legal_address, id)
+func (r RepoDB) ChangeCompanyLegalAddress(company *models.Company, id string) error {
+	_, err := r.db.Query(query.ChangeCompanyLegalAddress, company.Legal_address, id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func ChangeCompanyClients(company *models.Company, id string) error {
+func (r RepoDB) ChangeCompanyClients(company *models.Company, id string) error {
 	clientId := &models.ClientId{}
 
-	_, err := db.Query(query.DeleteCompanyClients, id)
+	_, err := r.db.Query(query.DeleteCompanyClients, id)
 	if err != nil {
 		return err
 	}
 
 	for _, v := range company.Clients {
-		err := db.Get(clientId, query.GetClientIdByFio, v)
+		err := r.db.Get(clientId, query.GetClientIdByFio, v)
 		if err != nil {
 			fmt.Println(err)
 		}
-		_, err = db.Query(query.InsertCompanyClients, id, int(clientId.Id))
+		_, err = r.db.Query(query.InsertCompanyClients, id, int(clientId.Id))
 		if err != nil {
 			return err
 		}
@@ -95,17 +95,17 @@ func ChangeCompanyClients(company *models.Company, id string) error {
 	return nil
 }
 
-func GetCompany(company *models.Company, id string) error {
-	err := db.Get(company, query.GetCompanyById, id)
+func (r RepoDB) GetCompany(company *models.Company, id string) error {
+	err := r.db.Get(company, query.GetCompanyById, id)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func ShowClientCompanysInfo(id string) ([]*models.Client_Companys, error) {
+func (r RepoDB) ShowClientCompanysInfo(id string) ([]*models.Client_Companys, error) {
 	var clientCompanysInfo = make([]*models.Client_Companys, 0)
-	rows, err := db.Queryx(query.ShowClientCompanysInfo, id)
+	rows, err := r.db.Queryx(query.ShowClientCompanysInfo, id)
 	if err != nil {
 		return nil, err
 	}

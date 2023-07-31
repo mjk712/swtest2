@@ -6,17 +6,16 @@ import (
 	"net/http"
 	"strconv"
 	"swtest2/internal/models"
-	"swtest2/internal/service"
 	"swtest2/internal/utils"
 
 	"github.com/gorilla/mux"
 )
 
-func AddCompany() http.Handler {
+func (h *handler) AddCompany() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		company := &models.Company{}
 		utils.ParseBody(r, company)
-		s, err := service.InsertCompany(company)
+		s, err := h.service.InsertCompany(company)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("Error in add company"))
@@ -27,14 +26,14 @@ func AddCompany() http.Handler {
 	})
 }
 
-func ChangeCompany() http.Handler {
+func (h *handler) ChangeCompany() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		vars := mux.Vars(r)
 		companyId := vars["id"]
 		company := &models.Company{}
 		utils.ParseBody(r, company)
-		err := service.ChangeCompany(company, companyId)
+		err := h.service.ChangeCompany(company, companyId)
 		if err != nil {
 			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
@@ -46,7 +45,7 @@ func ChangeCompany() http.Handler {
 	})
 }
 
-func AddClientIntoCompany() http.Handler {
+func (h *handler) AddClientIntoCompany() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
 		type client_company struct {
@@ -55,7 +54,7 @@ func AddClientIntoCompany() http.Handler {
 		}
 		clientCompanyInfo := &client_company{}
 		utils.ParseBody(r, clientCompanyInfo)
-		err := service.AddClientIntoCompany(clientCompanyInfo.Client_fio, clientCompanyInfo.Company_name)
+		err := h.service.AddClientIntoCompany(clientCompanyInfo.Client_fio, clientCompanyInfo.Company_name)
 		if err != nil {
 			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
@@ -68,10 +67,10 @@ func AddClientIntoCompany() http.Handler {
 	})
 }
 
-func ShowClientCompanysInfo() http.Handler {
+func (h *handler) ShowClientCompanysInfo() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id, _ := r.Context().Value("clientId").(uint64)
-		clientCompanysInfo, err := service.ShowClientCompanysInfo(strconv.FormatUint(id, 10))
+		clientCompanysInfo, err := h.service.ShowClientCompanysInfo(strconv.FormatUint(id, 10))
 		if err != nil {
 			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)

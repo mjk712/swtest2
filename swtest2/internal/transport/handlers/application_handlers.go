@@ -6,18 +6,17 @@ import (
 	"net/http"
 	"strconv"
 	"swtest2/internal/models"
-	"swtest2/internal/service"
 	"swtest2/internal/utils"
 
 	"github.com/gorilla/mux"
 )
 
-func AddApplication() http.Handler {
+func (h *handler) AddApplication() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id, _ := r.Context().Value("clientId").(uint64)
 		application := &models.Application{}
 		utils.ParseBody(r, application)
-		err := service.AddApplication(application, strconv.FormatUint(id, 10))
+		err := h.service.AddApplication(application, strconv.FormatUint(id, 10))
 		if err != nil {
 			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
@@ -30,7 +29,7 @@ func AddApplication() http.Handler {
 	})
 }
 
-func ChangeApplicationStatus() http.Handler {
+func (h *handler) ChangeApplicationStatus() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		application_id := vars["id"]
@@ -39,7 +38,7 @@ func ChangeApplicationStatus() http.Handler {
 		}
 		appstatus := &application_status{}
 		utils.ParseBody(r, appstatus)
-		err := service.ChangeApplicationStatus(application_id, appstatus.Status)
+		err := h.service.ChangeApplicationStatus(application_id, appstatus.Status)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("Shit error in change application status"))
