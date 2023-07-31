@@ -30,7 +30,7 @@ func (h *handler) AuthMiddleware(next http.Handler, role string) http.Handler {
 		jwtrole := claims["role"].(string)
 		if jwtrole != role {
 			w.WriteHeader(http.StatusUnauthorized)
-			fmt.Fprintf(w, "wait wait wait you are not %s, go away", role)
+			fmt.Fprintf(w, "Wait you are not %s, try go login in right account", role)
 			return
 		}
 		exp := claims["exp"].(float64)

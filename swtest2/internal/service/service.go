@@ -16,9 +16,9 @@ type Service interface {
 	AddApplication(application *models.Application, clientId string) error
 
 	AddClient(client *models.Client) error
-	ShowClientInfo(id string) ([]*models.Client_Vacations, error)
+	ShowClientInfo(id string) ([]*models.ClientVacations, error)
 	ChangeClient(client *models.Client, id string) error
-	ShowClientsApplicationsInfo() ([]*models.Clients_Applications, error)
+	ShowClientsApplicationsInfo() ([]*models.ClientsApplications, error)
 
 	AddColleague(colleague *models.Colleague) error
 	BlockColleague(id string) error
@@ -26,7 +26,7 @@ type Service interface {
 	InsertCompany(company *models.Company) (*models.Company, error)
 	AddClientIntoCompany(clientFio, companyName string) error
 	ChangeCompany(company *models.Company, id string) error
-	ShowClientCompanysInfo(id string) ([]*models.Client_Companys, error)
+	ShowClientCompanysInfo(id string) ([]*models.ClientCompanys, error)
 }
 
 func NewService(travelAgencyRepo database.Storage) Service {

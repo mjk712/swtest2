@@ -67,7 +67,7 @@ func (r RepoDB) ChangeCompanyInn(company *models.Company, id string) error {
 }
 
 func (r RepoDB) ChangeCompanyLegalAddress(company *models.Company, id string) error {
-	_, err := r.db.Query(query.ChangeCompanyLegalAddress, company.Legal_address, id)
+	_, err := r.db.Query(query.ChangeCompanyLegalAddress, company.LegalAddress, id)
 	if err != nil {
 		return err
 	}
@@ -103,14 +103,14 @@ func (r RepoDB) GetCompany(company *models.Company, id string) error {
 	return nil
 }
 
-func (r RepoDB) ShowClientCompanysInfo(id string) ([]*models.Client_Companys, error) {
-	var clientCompanysInfo = make([]*models.Client_Companys, 0)
+func (r RepoDB) ShowClientCompanysInfo(id string) ([]*models.ClientCompanys, error) {
+	var clientCompanysInfo = make([]*models.ClientCompanys, 0)
 	rows, err := r.db.Queryx(query.ShowClientCompanysInfo, id)
 	if err != nil {
 		return nil, err
 	}
 	for rows.Next() {
-		var a models.Client_Companys
+		var a models.ClientCompanys
 		err = rows.StructScan(&a)
 		if err != nil {
 			return nil, err

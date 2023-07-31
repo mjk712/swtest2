@@ -21,14 +21,14 @@ func (r RepoDB) CreateClient(client *models.Client) error {
 	return nil
 }
 
-func (r RepoDB) ShowClientInfo(id string) ([]*models.Client_Vacations, error) {
-	var client = make([]*models.Client_Vacations, 0)
+func (r RepoDB) ShowClientInfo(id string) ([]*models.ClientVacations, error) {
+	var client = make([]*models.ClientVacations, 0)
 	rows, err := r.db.Queryx(query.ShowClientInfo, id)
 	if err != nil {
 		return nil, err
 	}
 	for rows.Next() {
-		var a models.Client_Vacations
+		var a models.ClientVacations
 		err = rows.StructScan(&a)
 		if err != nil {
 			return nil, err
@@ -56,7 +56,7 @@ func (r RepoDB) ChangeClientPassport(client *models.Client, id string) error {
 }
 
 func (r RepoDB) ChangeClientEmailTelephone(client *models.Client, id string) error {
-	_, err := r.db.Query(query.ChangeClientEmailTelephone, client.Email_Telephone, id)
+	_, err := r.db.Query(query.ChangeClientEmailTelephone, client.EmailTelephone, id)
 	if err != nil {
 		return err
 	}
@@ -79,14 +79,14 @@ func (r RepoDB) GetClient(client *models.Client, id string) error {
 	return nil
 }
 
-func (r RepoDB) ShowClientApplicationsInfo() ([]*models.Clients_Applications, error) {
-	var client = make([]*models.Clients_Applications, 0)
+func (r RepoDB) ShowClientApplicationsInfo() ([]*models.ClientsApplications, error) {
+	var client = make([]*models.ClientsApplications, 0)
 	rows, err := r.db.Queryx(query.ShowClientsApplication)
 	if err != nil {
 		return nil, err
 	}
 	for rows.Next() {
-		var a models.Clients_Applications
+		var a models.ClientsApplications
 		err = rows.StructScan(&a)
 		if err != nil {
 			return nil, err

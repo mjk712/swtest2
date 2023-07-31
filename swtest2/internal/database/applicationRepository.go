@@ -18,7 +18,7 @@ func (r RepoDB) CreateApplication(application *models.Application, clientId stri
 	if err != nil {
 		return err
 	}
-	err = r.db.Get(application, query.GetClientByMessage, application.Client_message)
+	err = r.db.Get(application, query.GetClientByMessage, application.ClientMessage)
 	if err != nil {
 		return err
 	}

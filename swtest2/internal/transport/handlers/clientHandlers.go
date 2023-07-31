@@ -18,9 +18,8 @@ func (h *handler) AddClient() http.Handler {
 		utils.ParseBody(r, client)
 		err := h.service.AddClient(client)
 		if err != nil {
-			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("Shit error in add client"))
+			w.Write([]byte("error in add client:" + err.Error()))
 		}
 		f := fmt.Sprintf("Created Client-%s", client.Fio)
 		res, _ := json.Marshal(f)
@@ -40,26 +39,27 @@ func (h *handler) ShowClientInfo() http.Handler {
 		clientInfo, err := h.service.ShowClientInfo(clientId)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("OMG error in ShowClientInfo"))
+			w.Write([]byte("error in ShowClientInfo:" + err.Error()))
+			return
 		}
 
-		type client_info struct {
-			Client_full_name       string
-			Client_passport        string
-			Client_email_telephone string
-			Vacations              []string
+		type clientInformation struct {
+			ClientFullname       string
+			ClientPassport       string
+			ClientEmailTelephone string
+			Vacations            []string
 		}
 
-		var client_inf client_info
+		var clientInf clientInformation
 
 		for _, v := range clientInfo {
-			client_inf.Client_email_telephone = v.Client_email_telephone
-			client_inf.Client_passport = v.Client_passport
-			client_inf.Client_full_name = v.Client_full_name
-			client_inf.Vacations = append(client_inf.Vacations, v.Vacation_name)
+			clientInf.ClientEmailTelephone = v.ClientEmailTelephone
+			clientInf.ClientPassport = v.ClientPassport
+			clientInf.ClientFullname = v.ClientFullname
+			clientInf.Vacations = append(clientInf.Vacations, v.VacationName)
 		}
 
-		res, _ := json.Marshal(client_inf)
+		res, _ := json.Marshal(clientInf)
 		w.WriteHeader(http.StatusOK)
 		w.Write(res)
 	})
@@ -74,9 +74,9 @@ func (h *handler) ChangeClient() http.Handler {
 		utils.ParseBody(r, client)
 		err := h.service.ChangeClient(client, clientId)
 		if err != nil {
-			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("Shit error in change client"))
+			w.Write([]byte("error in change client" + err.Error()))
+			return
 		}
 		res, _ := json.Marshal(client)
 		w.WriteHeader(http.StatusCreated)
@@ -89,9 +89,9 @@ func (h *handler) ShowClientApplicationsInfo() http.Handler {
 
 		clientsApplicationsInfo, err := h.service.ShowClientsApplicationsInfo()
 		if err != nil {
-			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("Shit error in show clients applications info"))
+			w.Write([]byte("error in show clients applications info:" + err.Error()))
+			return
 		}
 
 		res, _ := json.Marshal(clientsApplicationsInfo)

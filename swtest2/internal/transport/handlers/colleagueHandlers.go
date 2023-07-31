@@ -18,7 +18,8 @@ func (h *handler) AddColleague() http.Handler {
 		err := h.service.AddColleague(colleague)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("Shit error in add colleague"))
+			w.Write([]byte("error in add colleague" + err.Error()))
+			return
 		}
 
 		f := fmt.Sprintf("Created Colleague-%s", colleague.Fio)
@@ -35,7 +36,8 @@ func (h *handler) BlockColleague() http.Handler {
 		err := h.service.BlockColleague(colleagueId)
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("OMG error in Block colleague"))
+			w.Write([]byte("error in Block colleague" + err.Error()))
+			return
 		}
 		m := fmt.Sprintf("Block Colleague with id %s .", colleagueId)
 		res, _ := json.Marshal(m)

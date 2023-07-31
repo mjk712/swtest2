@@ -12,7 +12,7 @@ func (s *service) AddClient(client *models.Client) error {
 	return nil
 }
 
-func (s *service) ShowClientInfo(id string) ([]*models.Client_Vacations, error) {
+func (s *service) ShowClientInfo(id string) ([]*models.ClientVacations, error) {
 	client, err := s.travelAgencyRepo.ShowClientInfo(id)
 	if err != nil {
 		return nil, err
@@ -37,7 +37,7 @@ func (s *service) ChangeClient(client *models.Client, id string) error {
 		}
 		return nil
 	}
-	if client.Email_Telephone != "" {
+	if client.EmailTelephone != "" {
 		err := s.travelAgencyRepo.ChangeClientEmailTelephone(client, id)
 		if err != nil {
 			return err
@@ -58,7 +58,7 @@ func (s *service) ChangeClient(client *models.Client, id string) error {
 	return nil
 }
 
-func (s *service) ShowClientsApplicationsInfo() ([]*models.Clients_Applications, error) {
+func (s *service) ShowClientsApplicationsInfo() ([]*models.ClientsApplications, error) {
 	clientApplications, err := s.travelAgencyRepo.ShowClientApplicationsInfo()
 	if err != nil {
 		return nil, err

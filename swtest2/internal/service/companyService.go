@@ -34,7 +34,7 @@ func (s *service) ChangeCompany(company *models.Company, id string) error {
 			return err
 		}
 	}
-	if company.Legal_address != "" {
+	if company.LegalAddress != "" {
 		err := s.travelAgencyRepo.ChangeCompanyLegalAddress(company, id)
 		if err != nil {
 			return err
@@ -50,7 +50,7 @@ func (s *service) ChangeCompany(company *models.Company, id string) error {
 	return nil
 }
 
-func (s *service) ShowClientCompanysInfo(id string) ([]*models.Client_Companys, error) {
+func (s *service) ShowClientCompanysInfo(id string) ([]*models.ClientCompanys, error) {
 
 	clientCompanysInfo, err := s.travelAgencyRepo.ShowClientCompanysInfo(id)
 	if err != nil {

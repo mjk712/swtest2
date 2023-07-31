@@ -10,10 +10,10 @@ import (
 
 func (s *service) GetUserToken(login, password string) (string, error) {
 
-	loginpassword := login + "/" + password
+	loginPassword := login + "/" + password
 	colleague := &models.Colleague{}
 	client := &models.Client{}
-	err := s.travelAgencyRepo.AuthColleague(colleague, loginpassword)
+	err := s.travelAgencyRepo.AuthColleague(colleague, loginPassword)
 	if err == nil {
 		role := "colleague"
 		id := colleague.Id
@@ -23,7 +23,7 @@ func (s *service) GetUserToken(login, password string) (string, error) {
 		}
 		return token, nil
 	}
-	err = s.travelAgencyRepo.AuthClient(client, loginpassword)
+	err = s.travelAgencyRepo.AuthClient(client, loginPassword)
 	if err == nil {
 		role := "client"
 		id := client.Id

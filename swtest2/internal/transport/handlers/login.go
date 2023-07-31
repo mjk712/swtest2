@@ -16,7 +16,8 @@ func (h *handler) Login(w http.ResponseWriter, r *http.Request) {
 		token, err := h.service.GetUserToken(user.Username, user.Password)
 		if err != nil {
 			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte("Shit error in login"))
+			w.Write([]byte("error in login:" + err.Error()))
+			return
 		}
 
 		f := fmt.Sprintf("Succesfull login, your token - %s", token)

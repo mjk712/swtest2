@@ -8,13 +8,13 @@ type Storage interface {
 
 	AuthClient(client *models.Client, loginpassword string) error
 	CreateClient(client *models.Client) error
-	ShowClientInfo(id string) ([]*models.Client_Vacations, error)
+	ShowClientInfo(id string) ([]*models.ClientVacations, error)
 	ChangeClientFio(client *models.Client, id string) error
 	ChangeClientPassport(client *models.Client, id string) error
 	ChangeClientEmailTelephone(client *models.Client, id string) error
 	ChangeClientLoginPassword(client *models.Client, id string) error
 	GetClient(client *models.Client, id string) error
-	ShowClientApplicationsInfo() ([]*models.Clients_Applications, error)
+	ShowClientApplicationsInfo() ([]*models.ClientsApplications, error)
 
 	AuthColleague(colleague *models.Colleague, loginpassword string) error
 	CreateColleague(colleague *models.Colleague) error
@@ -27,5 +27,5 @@ type Storage interface {
 	ChangeCompanyLegalAddress(company *models.Company, id string) error
 	ChangeCompanyClients(company *models.Company, id string) error
 	GetCompany(company *models.Company, id string) error
-	ShowClientCompanysInfo(id string) ([]*models.Client_Companys, error)
+	ShowClientCompanysInfo(id string) ([]*models.ClientCompanys, error)
 }
