@@ -1,7 +1,7 @@
 package query
 
 var AddColleague = `INSERT INTO Colleague(fio,loginpassword,status)
-VALUES(:fio, :loginpassword, :status)`
+VALUES($1, $2, $3)`
 
 var BlockColleague = `UPDATE Colleague SET status = 'Заблокирован'
 WHERE id = $1`

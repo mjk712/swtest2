@@ -1,6 +1,8 @@
 package service
 
 import (
+	"errors"
+	"strings"
 	"swtest2/internal/config"
 	"swtest2/internal/models"
 	"time"
@@ -9,6 +11,10 @@ import (
 )
 
 func (s *service) GetUserToken(login, password string) (string, error) {
+
+	if strings.Contains(login, "/") || strings.Contains(password, "/") {
+		return "", errors.New("found fobbiden symbol '/' in the loginPassword data")
+	}
 
 	loginPassword := login + "/" + password
 	colleague := &models.Colleague{}

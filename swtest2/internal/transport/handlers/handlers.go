@@ -27,7 +27,7 @@ func (h *handler) ColleagueManagerRoutes(router *mux.Router) {
 	router.Handle("/colleague-manager/add-client", h.AuthMiddleware(h.AddClient(), "colleague"))
 	router.Handle("/colleague-manager/show-client-info/{id}", h.AuthMiddleware(h.ShowClientInfo(), "colleague"))
 	router.Handle("/colleague-manager/change-client/{id}", h.AuthMiddleware(h.ChangeClient(), "colleague"))
-	router.Handle("/colleague-manager/show-client-sapplications-info", h.AuthMiddleware(h.ShowClientApplicationsInfo(), "colleague"))
+	router.Handle("/colleague-manager/show-clients-applications-info", h.AuthMiddleware(h.ShowClientApplicationsInfo(), "colleague"))
 	router.Handle("/colleague-manager/change-application-status/{id}", h.AuthMiddleware(h.ChangeApplicationStatus(), "colleague"))
 	router.Handle("/colleague-manager/add-company", h.AuthMiddleware(h.AddCompany(), "colleague"))
 	router.Handle("/colleague-manager/add-client-into-company", h.AuthMiddleware(h.AddClientIntoCompany(), "colleague"))
