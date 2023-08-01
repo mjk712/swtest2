@@ -57,8 +57,9 @@ func (h *handler) AddClientIntoCompany() http.Handler {
 		utils.ParseBody(r, clientCompanyInfo)
 		err := h.service.AddClientIntoCompany(clientCompanyInfo.ClientFio, clientCompanyInfo.CompanyName)
 		if err != nil {
+			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("error in add client into company:" + err.Error()))
+			w.Write([]byte("error in add client into company"))
 			return
 		}
 		f := fmt.Sprintf("Added %s into %s company.", clientCompanyInfo.ClientFio, clientCompanyInfo.CompanyName)
@@ -73,8 +74,9 @@ func (h *handler) ShowClientCompanysInfo() http.Handler {
 		id, _ := r.Context().Value("clientId").(uint64)
 		clientCompanysInfo, err := h.service.ShowClientCompanysInfo(strconv.FormatUint(id, 10))
 		if err != nil {
+			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("error in show client companys info:" + err.Error()))
+			w.Write([]byte("error in show client companys info"))
 			return
 		}
 

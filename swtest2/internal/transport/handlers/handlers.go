@@ -20,20 +20,20 @@ func NewHandler(service service.Service) Handler {
 
 func (h *handler) ColleagueManagerRoutes(router *mux.Router) {
 	//LOGIN IN
-	router.HandleFunc("/colleaguemanager/auth", h.Login).Methods("POST")
+	router.HandleFunc("/colleague-manager/auth", h.Login).Methods("POST")
 	//-----------------------COLLEAGUE ONLY
-	router.Handle("/colleaguemanager/addcolleague", h.AuthMiddleware(h.AddColleague(), "colleague"))
-	router.Handle("/colleaguemanager/blockcolleague/{id}", h.AuthMiddleware(h.BlockColleague(), "colleague"))
-	router.Handle("/colleaguemanager/addclient", h.AuthMiddleware(h.AddClient(), "colleague"))
-	router.Handle("/colleaguemanager/showclientinfo/{id}", h.AuthMiddleware(h.ShowClientInfo(), "colleague"))
-	router.Handle("/colleaguemanager/changeclient/{id}", h.AuthMiddleware(h.ChangeClient(), "colleague"))
-	router.Handle("/colleaguemanager/showclientsapplicationsinfo", h.AuthMiddleware(h.ShowClientApplicationsInfo(), "colleague"))
-	router.Handle("/colleaguemanager/changeapplicationstatus/{id}", h.AuthMiddleware(h.ChangeApplicationStatus(), "colleague"))
-	router.Handle("/colleaguemanager/addcompany", h.AuthMiddleware(h.AddCompany(), "colleague"))
-	router.Handle("/colleaguemanager/addclientintocompany", h.AuthMiddleware(h.AddClientIntoCompany(), "colleague"))
-	router.Handle("/colleaguemanager/changecompany/{id}", h.AuthMiddleware(h.ChangeCompany(), "colleague"))
+	router.Handle("/colleague-manager/add-colleague", h.AuthMiddleware(h.AddColleague(), "colleague"))
+	router.Handle("/colleague-manager/block-colleague/{id}", h.AuthMiddleware(h.BlockColleague(), "colleague"))
+	router.Handle("/colleague-manager/add-client", h.AuthMiddleware(h.AddClient(), "colleague"))
+	router.Handle("/colleague-manager/show-client-info/{id}", h.AuthMiddleware(h.ShowClientInfo(), "colleague"))
+	router.Handle("/colleague-manager/change-client/{id}", h.AuthMiddleware(h.ChangeClient(), "colleague"))
+	router.Handle("/colleague-manager/show-client-sapplications-info", h.AuthMiddleware(h.ShowClientApplicationsInfo(), "colleague"))
+	router.Handle("/colleague-manager/change-application-status/{id}", h.AuthMiddleware(h.ChangeApplicationStatus(), "colleague"))
+	router.Handle("/colleague-manager/add-company", h.AuthMiddleware(h.AddCompany(), "colleague"))
+	router.Handle("/colleague-manager/add-client-into-company", h.AuthMiddleware(h.AddClientIntoCompany(), "colleague"))
+	router.Handle("/colleague-manager/change-company/{id}", h.AuthMiddleware(h.ChangeCompany(), "colleague"))
 	//-------------------------CLIENTS ONLY
-	router.Handle("/colleaguemanager/showclientinfo", h.AuthMiddleware(h.ShowClientInfo(), "client"))
-	router.Handle("/colleaguemanager/showclientcompanyinfo", h.AuthMiddleware(h.ShowClientCompanysInfo(), "client"))
-	router.Handle("/colleaguemanager/addapplication", h.AuthMiddleware(h.AddApplication(), "client"))
+	router.Handle("/colleague-manager/show-client-info", h.AuthMiddleware(h.ShowClientInfo(), "client"))
+	router.Handle("/colleague-manager/show-client-company-info", h.AuthMiddleware(h.ShowClientCompanysInfo(), "client"))
+	router.Handle("/colleague-manager/add-application", h.AuthMiddleware(h.AddApplication(), "client"))
 }

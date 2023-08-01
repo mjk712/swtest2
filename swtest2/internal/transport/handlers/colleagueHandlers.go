@@ -17,8 +17,9 @@ func (h *handler) AddColleague() http.Handler {
 		utils.ParseBody(r, colleague)
 		err := h.service.AddColleague(colleague)
 		if err != nil {
+			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("error in add colleague" + err.Error()))
+			w.Write([]byte("error in add colleague"))
 			return
 		}
 
@@ -35,8 +36,9 @@ func (h *handler) BlockColleague() http.Handler {
 		colleagueId := vars["id"]
 		err := h.service.BlockColleague(colleagueId)
 		if err != nil {
+			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("error in Block colleague" + err.Error()))
+			w.Write([]byte("error in Block colleague"))
 			return
 		}
 		m := fmt.Sprintf("Block Colleague with id %s .", colleagueId)

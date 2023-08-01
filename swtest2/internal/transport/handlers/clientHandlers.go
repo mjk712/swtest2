@@ -18,8 +18,9 @@ func (h *handler) AddClient() http.Handler {
 		utils.ParseBody(r, client)
 		err := h.service.AddClient(client)
 		if err != nil {
+			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("error in add client:" + err.Error()))
+			w.Write([]byte("error in add client"))
 			return
 		}
 		f := fmt.Sprintf("Created Client-%s", client.Fio)
@@ -39,8 +40,9 @@ func (h *handler) ShowClientInfo() http.Handler {
 		}
 		clientInfo, err := h.service.ShowClientInfo(clientId)
 		if err != nil {
+			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("error in ShowClientInfo:" + err.Error()))
+			w.Write([]byte("error in ShowClientInfo"))
 			return
 		}
 
@@ -75,8 +77,9 @@ func (h *handler) ChangeClient() http.Handler {
 		utils.ParseBody(r, client)
 		err := h.service.ChangeClient(client, clientId)
 		if err != nil {
+			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("error in change client" + err.Error()))
+			w.Write([]byte("error in change client"))
 			return
 		}
 		res, _ := json.Marshal(client)
@@ -90,8 +93,9 @@ func (h *handler) ShowClientApplicationsInfo() http.Handler {
 
 		clientsApplicationsInfo, err := h.service.ShowClientsApplicationsInfo()
 		if err != nil {
+			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("error in show clients applications info:" + err.Error()))
+			w.Write([]byte("error in show clients applications info"))
 			return
 		}
 

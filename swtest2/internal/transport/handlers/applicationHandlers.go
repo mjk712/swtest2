@@ -18,8 +18,9 @@ func (h *handler) AddApplication() http.Handler {
 		utils.ParseBody(r, application)
 		err := h.service.AddApplication(application, strconv.FormatUint(id, 10))
 		if err != nil {
+			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("error in add application:" + err.Error()))
+			w.Write([]byte("error in add application"))
 			return
 		}
 		res, _ := json.Marshal(application)
@@ -39,8 +40,9 @@ func (h *handler) ChangeApplicationStatus() http.Handler {
 		utils.ParseBody(r, appstatus)
 		err := h.service.ChangeApplicationStatus(applicationId, appstatus.Status)
 		if err != nil {
+			fmt.Println(err)
 			w.WriteHeader(http.StatusBadRequest)
-			w.Write([]byte("error in change application status" + err.Error()))
+			w.Write([]byte("error in change application status"))
 			return
 		}
 		f := fmt.Sprintf("Change application with id %s, status = %s", applicationId, appstatus.Status)
